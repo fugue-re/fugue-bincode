@@ -1,6 +1,6 @@
 #[macro_use]
 extern crate serde_derive;
-extern crate bincode;
+extern crate fugue_bincode as bincode;
 
 use bincode::{deserialize, serialize};
 
