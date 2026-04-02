@@ -24,7 +24,7 @@
 //! Support for `i128` and `u128` is automatically enabled on Rust toolchains
 //! greater than or equal to `1.26.0` and disabled for targets which do not support it
 
-#![doc(html_root_url = "https://docs.rs/fugue-bincode/1.3.3")]
+#![doc(html_root_url = "https://docs.rs/fugue-bincode/1.3.4")]
 #![crate_name = "fugue_bincode"]
 #![crate_type = "rlib"]
 #![crate_type = "dylib"]
