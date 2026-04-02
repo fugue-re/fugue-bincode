@@ -141,6 +141,14 @@ where
     R: io::Read,
 {
     fn fill_buffer(&mut self, length: usize) -> Result<()> {
+        if let Some(to_reserve) = length.checked_sub(self.temp_buffer.capacity()) {
+            self.temp_buffer.try_reserve(to_reserve).map_err(|_| {
+                io::Error::new(
+                    io::ErrorKind::OutOfMemory,
+                    "size of allocation exceeds available memory",
+                )
+            })?;
+        }
         self.temp_buffer.resize(length, 0);
 
         self.reader.read_exact(&mut self.temp_buffer)?;
@@ -198,5 +206,24 @@ mod test {
 
         reader.fill_buffer(5).unwrap();
         assert_eq!(5, reader.temp_buffer.len());
+    }
+
+    #[test]
+    fn test_lfs_pointer_ioreader_no_limit() {
+        use std::io::Cursor;
+
+        // A Git LFS pointer file that hasn't been pulled. When fed to bincode v1.3.3, bytes 8-15
+        // ("https://") are interpreted as a length of
+        // 3400000511170344040 (0x2f2f3a7370747468).
+        const LFS_POINTER: &[u8] = b"version https://git-lfs.github.com/spec/v1\n\
+            oid sha256:6911f0f7f1d0457b10df382cc1d7130410036917134b8302c889eef9bd488f65\n\
+            size 124958";
+
+        // Test IoReader without a size limit (the default for deserialize_from) and adversarial
+        // input; this would previously attempt to allocate 3400000511170344040 bytes and fail with
+        // an error we cannot catch.
+        let result = crate::deserialize_from::<_, Vec<String>>(Cursor::new(LFS_POINTER));
+
+        assert!(result.is_err());
     }
 }

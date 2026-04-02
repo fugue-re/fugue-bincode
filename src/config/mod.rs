@@ -3,8 +3,8 @@
 //! instance of the `DefaultOptions` struct:
 //!
 //! ```rust
-//! use bincode::Options;
-//! let my_options = bincode::DefaultOptions::new();
+//! use fugue_bincode::Options;
+//! let my_options = fugue_bincode::DefaultOptions::new();
 //! ```
 //!
 //! # Options Struct vs bincode functions
@@ -21,8 +21,8 @@
 //! settings as the functions, you should adjust the `DefaultOptions` struct like so:
 //!
 //! ```rust
-//! use bincode::Options;
-//! let my_options = bincode::DefaultOptions::new()
+//! use fugue_bincode::Options;
+//! let my_options = fugue_bincode::DefaultOptions::new()
 //!     .with_fixint_encoding()
 //!     .allow_trailing_bytes();
 //! ```
@@ -64,8 +64,8 @@ mod trailing;
 /// For example, if you wanted to limit the bincode deserializer to 1 kilobyte of user input:
 ///
 /// ```rust
-/// use bincode::Options;
-/// let my_options = bincode::DefaultOptions::new().with_limit(1024);
+/// use fugue_bincode::Options;
+/// let my_options = fugue_bincode::DefaultOptions::new().with_limit(1024);
 /// ```
 ///
 /// ### DefaultOptions struct vs. functions

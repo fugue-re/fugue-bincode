@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate serde_derive;
 
-extern crate bincode;
+extern crate fugue_bincode as bincode;
 #[macro_use]
 extern crate serde;
 extern crate serde_bytes;
